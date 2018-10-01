@@ -24,7 +24,8 @@ class SongsController < ApplicationController
   end
 
   def upload
-    SongWorker.perform_async(params[:leads].path)
+    binding.pry
+    SongsWorker.perform_async(params[:leads].path)
     CSV.foreach(params["file"].path, headers: true) do |song|
       Song.create(title: song[0], artist_name: song[1])
     end
@@ -60,4 +61,3 @@ class SongsController < ApplicationController
     params.require(:song).permit(:title, :artist_name)
   end
 end
-
